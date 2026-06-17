@@ -21,42 +21,15 @@ Project2Video 是一个 AI 驱动的 CLI 工具，能够自动分析任意 GitHu
 - **TTS 语音旁白** — 集成 OpenAI TTS，自动生成专业旁白配音
 - **一键视频渲染** — 通过 HyperFrames 将 HTML 合成渲染为 MP4 视频
 
-## 效果展示
-
-```
-$ project2video ./my-awesome-project
-
-  Phase 1: Understanding project...
-  ✓ Repository analyzed: my-awesome-project (web-app)
-  ✓ Discovered 5 core capabilities
-  ✓ Assets scanned: score 72/100
-
-  Phase 2: Building strategy...
-  ✓ Strategy: "一行代码，搞定视频"
-
-  Phase 3: Generating story...
-  ✓ Story generated: 4 scenes, 8 shots
-
-  Phase 4: Composing video...
-  ✓ Timeline: 35s, 12 elements
-  ✓ HTML composition generated
-
-  Phase 5: Rendering...
-  ✓ Audio generated
-  ✓ Video rendered: output/my-awesome-project.mp4
-
-  Done! Video saved to: output/my-awesome-project/renders/my-awesome-project.mp4
-```
-
 ## 应用场景
 
-| 场景 | 说明 |
-|------|------|
-| Product Hunt 发布 | 为新产品快速生成专业宣传视频 |
-| 社交媒体推广 | Twitter/X、YouTube Shorts 等平台的项目展示 |
-| 开源项目推广 | 让更多开发者了解你的项目价值 |
-| 技术演示 | 会议演讲、技术分享的项目介绍素材 |
-| 产品文档 | 项目首页的动态展示视频 |
+| 场景              | 说明                                       |
+| ----------------- | ------------------------------------------ |
+| Product Hunt 发布 | 为新产品快速生成专业宣传视频               |
+| 社交媒体推广      | Twitter/X、YouTube Shorts 等平台的项目展示 |
+| 开源项目推广      | 让更多开发者了解你的项目价值               |
+| 技术演示          | 会议演讲、技术分享的项目介绍素材           |
+| 产品文档          | 项目首页的动态展示视频                     |
 
 ## 系统架构
 
@@ -174,18 +147,18 @@ graph LR
 
 ## 技术栈
 
-| 层级 | 技术 | 用途 |
-|------|------|------|
-| 运行时 | Node.js >= 18 | ES Modules 支持 |
-| CLI 框架 | Commander.js | 命令行参数解析 |
-| AI 引擎 | OpenAI SDK | LLM 调用（兼容 DeepSeek） |
-| 模板引擎 | Handlebars | HTML 模板渲染 |
-| 图像处理 | Sharp | 图片元数据读取与质量评估 |
-| 动画引擎 | GSAP | HTML 时间线动画 |
-| 视频渲染 | HyperFrames | HTML → MP4 转换 |
-| 视频编码 | FFmpeg | 底层视频编码 |
-| TTS 语音 | OpenAI TTS | 旁白语音生成 |
-| 终端美化 | Chalk + Ora | CLI 交互体验 |
+| 层级     | 技术          | 用途                      |
+| -------- | ------------- | ------------------------- |
+| 运行时   | Node.js >= 18 | ES Modules 支持           |
+| CLI 框架 | Commander.js  | 命令行参数解析            |
+| AI 引擎  | OpenAI SDK    | LLM 调用（兼容 DeepSeek） |
+| 模板引擎 | Handlebars    | HTML 模板渲染             |
+| 图像处理 | Sharp         | 图片元数据读取与质量评估  |
+| 动画引擎 | GSAP          | HTML 时间线动画           |
+| 视频渲染 | HyperFrames   | HTML → MP4 转换          |
+| 视频编码 | FFmpeg        | 底层视频编码              |
+| TTS 语音 | OpenAI TTS    | 旁白语音生成              |
+| 终端美化 | Chalk + Ora   | CLI 交互体验              |
 
 ## 项目结构
 
@@ -297,27 +270,27 @@ npx project2video ./my-project --duration 40
 
 ### 命令行参数
 
-| 参数 | 说明 | 默认值 |
-|------|------|--------|
-| `<project-path>` | 项目目录路径（必填） | — |
-| `-a, --assets <path>` | 自定义素材目录 | 自动扫描项目内 assets/ |
-| `-t, --template <name>` | 视觉模板 | AI 自动推荐 |
-| `-o, --output <path>` | 输出目录 | `output/<项目名>/` |
-| `--no-tts` | 跳过 TTS 旁白，生成纯视觉版本 | false |
-| `--story-only` | 只输出故事板 JSON，不渲染视频 | false |
-| `--fast` | 快速模式，跳过 LLM Agent | false |
-| `--preview` | 打开 HyperFrames Studio 预览 | false |
-| `--duration <seconds>` | 目标视频时长（秒） | 35 |
-| `-v, --verbose` | 显示详细的中间过程 JSON 数据 | false |
-| `--save-intermediates` | 保存中间结果 JSON 文件到输出目录 | false |
+| 参数                      | 说明                             | 默认值                 |
+| ------------------------- | -------------------------------- | ---------------------- |
+| `<project-path>`        | 项目目录路径（必填）             | —                     |
+| `-a, --assets <path>`   | 自定义素材目录                   | 自动扫描项目内 assets/ |
+| `-t, --template <name>` | 视觉模板                         | AI 自动推荐            |
+| `-o, --output <path>`   | 输出目录                         | `output/<项目名>/`   |
+| `--no-tts`              | 跳过 TTS 旁白，生成纯视觉版本    | false                  |
+| `--story-only`          | 只输出故事板 JSON，不渲染视频    | false                  |
+| `--fast`                | 快速模式，跳过 LLM Agent         | false                  |
+| `--preview`             | 打开 HyperFrames Studio 预览     | false                  |
+| `--duration <seconds>`  | 目标视频时长（秒）               | 35                     |
+| `-v, --verbose`         | 显示详细的中间过程 JSON 数据     | false                  |
+| `--save-intermediates`  | 保存中间结果 JSON 文件到输出目录 | false                  |
 
 ### 视觉模板
 
-| 模板 | 风格 | 适用项目 |
-|------|------|----------|
-| `game-trailer` | 霓虹视觉、快速剪辑、电影感 | 游戏项目 |
-| `product-hunter` | 简洁优雅、白色背景、强调色 | Web 应用、SaaS 产品 |
-| `minimal` | 深色背景、干净排版、微妙动画 | 通用，适合所有项目类型 |
+| 模板               | 风格                         | 适用项目               |
+| ------------------ | ---------------------------- | ---------------------- |
+| `game-trailer`   | 霓虹视觉、快速剪辑、电影感   | 游戏项目               |
+| `product-hunter` | 简洁优雅、白色背景、强调色   | Web 应用、SaaS 产品    |
+| `minimal`        | 深色背景、干净排版、微妙动画 | 通用，适合所有项目类型 |
 
 ### 输出结构
 
@@ -352,14 +325,14 @@ output/<project-name>/
 
 系统会自动评估项目中的素材质量（满分 100）：
 
-| 素材类型 | 权重 | 说明 |
-|---------|------|------|
-| Demo 视频 | 30 | 最高权重，视频素材最具说服力 |
-| Hero 图片 | 25 | 主视觉图片 |
-| 细节截图 | 15 | 3 张以上截图获得加分 |
-| CTA 素材 | 10 | 行动号召相关素材 |
-| 自定义 BGM | 10 | 自定义背景音乐 |
-| Logo | 10 | 项目 Logo |
+| 素材类型   | 权重 | 说明                         |
+| ---------- | ---- | ---------------------------- |
+| Demo 视频  | 30   | 最高权重，视频素材最具说服力 |
+| Hero 图片  | 25   | 主视觉图片                   |
+| 细节截图   | 15   | 3 张以上截图获得加分         |
+| CTA 素材   | 10   | 行动号召相关素材             |
+| 自定义 BGM | 10   | 自定义背景音乐               |
+| Logo       | 10   | 项目 Logo                    |
 
 ### 项目类型自动识别
 
@@ -387,6 +360,7 @@ project2video ./my-project --story-only
 ```
 
 使用 `--save-intermediates` 后，可以在 `output/<project>/intermediates/` 目录下查看：
+
 - 仓库分析结果、AI 发现的核心特性
 - 营销策略、完整故事板
 - 时间线 DSL、HTML 合成配置
