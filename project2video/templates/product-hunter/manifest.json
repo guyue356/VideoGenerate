@@ -1,0 +1,47 @@
+{
+  "name": "product-hunter",
+  "description": "Product Hunt style — clean, elegant, white background with accent colors",
+  "supports": ["web-app", "cli", "api", "library", "unknown"],
+  "requires_assets": {
+    "min_images": 0,
+    "min_videos": 0,
+    "preferred": ["image"]
+  },
+  "dsl_handlers": {
+    "hero-title": "renderHeroTitle",
+    "video-clip": "renderVideoClip",
+    "hero-image": "renderHeroImage",
+    "code-block": "renderCodeBlock",
+    "star-cta": "renderStarCTA",
+    "subtitle": "renderSubtitle",
+    "text-list": "renderTextList",
+    "overlay-text": "renderOverlayText"
+  },
+  "default_motion": "fade-in",
+  "default_transition": "smooth-fade",
+  "bg_style": "background: #ffffff",
+  "styles": {
+    "hero": {
+      "font_size": "4.5rem",
+      "color": "#1a1a1a",
+      "text_shadow": "none",
+      "font_family": "system-ui, -apple-system, sans-serif"
+    },
+    "body": {
+      "font_size": "2rem",
+      "color": "#333333",
+      "font_family": "system-ui, -apple-system, sans-serif"
+    },
+    "code": {
+      "font_size": "1.1rem",
+      "color": "#e83e8c",
+      "bg": "#f8f9fa",
+      "border": "1px solid #dee2e6"
+    },
+    "cta": {
+      "font_size": "3rem",
+      "color": "#ff6154",
+      "text_shadow": "none"
+    }
+  }
+}

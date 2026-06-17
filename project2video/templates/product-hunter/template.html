@@ -1,0 +1,24 @@
+<div id="stage" data-composition-id="promo" data-start="0"
+     data-width="1920" data-height="1080"
+     style="{{bg_style}}">
+
+  {{#each elements}}
+  <div class="clip scene-{{this.type}}" data-start="{{this.start}}" data-duration="{{this.duration}}" data-track-index="0"
+       id="shot-{{this.shot_id}}">
+  </div>
+  {{/each}}
+
+  <audio data-start="0" data-duration="{{total_duration}}"
+         data-track-index="99" data-volume="0.4"
+         src="audio/bgm.wav"></audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script>
+    window.__timelines = window.__timelines || {};
+    (function() {
+      const tl = gsap.timeline({ paused: true });
+      {{timeline_js}}
+      window.__timelines.promo = tl;
+    })();
+  </script>
+</div>

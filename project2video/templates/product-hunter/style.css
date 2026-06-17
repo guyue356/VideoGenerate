@@ -1,0 +1,90 @@
+/* Product Hunt Template — Clean, Modern, Light */
+
+.hero-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4.5rem;
+  color: #1a1a1a;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+}
+
+.subtitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #555555;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.video-clip video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.code-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  padding: 60px;
+  border-radius: 12px;
+}
+
+.code-block pre {
+  font-size: 1.1rem;
+  color: #e83e8c;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  white-space: pre-wrap;
+  max-width: 80%;
+  line-height: 1.6;
+}
+
+.star-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.star-cta .cta-text {
+  font-size: 3rem;
+  color: #ff6154;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+}
+
+.text-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.text-list .list-item {
+  font-size: 1.8rem;
+  color: #333333;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  font-family: system-ui, -apple-system, sans-serif;
+}

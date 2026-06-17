@@ -1,0 +1,47 @@
+{
+  "name": "game-trailer",
+  "description": "Game trailer style with neon visuals, fast cuts, and cinematic feel",
+  "supports": ["game"],
+  "requires_assets": {
+    "min_images": 0,
+    "min_videos": 0,
+    "preferred": ["video", "image"]
+  },
+  "dsl_handlers": {
+    "hero-title": "renderHeroTitle",
+    "video-clip": "renderVideoClip",
+    "hero-image": "renderHeroImage",
+    "code-block": "renderCodeBlock",
+    "star-cta": "renderStarCTA",
+    "subtitle": "renderSubtitle",
+    "text-list": "renderTextList",
+    "overlay-text": "renderOverlayText"
+  },
+  "default_motion": "zoom-in",
+  "default_transition": "flash-cut",
+  "bg_style": "background: radial-gradient(ellipse at center, #1a0a2e 0%, #0a0a0f 70%)",
+  "styles": {
+    "hero": {
+      "font_size": "5rem",
+      "color": "#00ffff",
+      "text_shadow": "0 0 30px #ff00ff, 0 0 60px #ff00ff",
+      "font_family": "'Courier New', monospace"
+    },
+    "body": {
+      "font_size": "2rem",
+      "color": "#ffffff",
+      "font_family": "'Courier New', monospace"
+    },
+    "code": {
+      "font_size": "1.2rem",
+      "color": "#00ffff",
+      "bg": "rgba(0,0,0,0.9)",
+      "border": "1px solid #00ffff"
+    },
+    "cta": {
+      "font_size": "3.5rem",
+      "color": "#ffaa00",
+      "text_shadow": "0 0 30px #ffaa00"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "name": "minimal",
+  "description": "Minimal style — dark background, clean typography, subtle animations",
+  "supports": ["game", "web-app", "cli", "api", "library", "unknown"],
+  "requires_assets": {
+    "min_images": 0,
+    "min_videos": 0,
+    "preferred": []
+  },
+  "dsl_handlers": {
+    "hero-title": "renderHeroTitle",
+    "video-clip": "renderVideoClip",
+    "hero-image": "renderHeroImage",
+    "code-block": "renderCodeBlock",
+    "star-cta": "renderStarCTA",
+    "subtitle": "renderSubtitle",
+    "text-list": "renderTextList",
+    "overlay-text": "renderOverlayText"
+  },
+  "default_motion": "fade-in",
+  "default_transition": "crossfade",
+  "bg_style": "background: #111111",
+  "styles": {
+    "hero": {
+      "font_size": "5rem",
+      "color": "#ffffff",
+      "text_shadow": "none",
+      "font_family": "system-ui, -apple-system, sans-serif"
+    },
+    "body": {
+      "font_size": "2rem",
+      "color": "#cccccc",
+      "font_family": "system-ui, -apple-system, sans-serif"
+    },
+    "code": {
+      "font_size": "1.1rem",
+      "color": "#7dd3fc",
+      "bg": "rgba(0,0,0,0.8)",
+      "border": "1px solid #333"
+    },
+    "cta": {
+      "font_size": "3rem",
+      "color": "#ffffff",
+      "text_shadow": "none"
+    }
+  }
+}
