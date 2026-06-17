@@ -3,6 +3,20 @@ import { join, resolve } from 'path';
 import OpenAI from 'openai';
 import { CONFIG } from '../config.js';
 
+// TTS Provider 配置
+const TTS_PROVIDERS = {
+  mimo: {
+    baseURL: 'https://api.minimax.chat/v1',
+    model: 'mimo-v2.5-tts',
+    envKey: 'MIMO_API_KEY',
+  },
+  openai: {
+    baseURL: 'https://api.openai.com/v1',
+    model: 'tts-1',
+    envKey: 'OPENAI_API_KEY',
+  },
+};
+
 export async function generateAudio({ story, assetManifest, outputDir, skipTTS }) {
   mkdirSync(outputDir, { recursive: true });
 
@@ -40,7 +54,7 @@ export async function generateAudio({ story, assetManifest, outputDir, skipTTS }
         cpSync(src, join(outputDir, 'narration.wav'));
       }
     } else {
-      // Generate TTS with OpenAI
+      // Generate TTS
       const narration = buildNarrationText(story);
       if (narration) {
         await generateTTS(narration, join(outputDir, 'narration.wav'));
@@ -56,19 +70,36 @@ function buildNarrationText(story) {
     .join(' ');
 }
 
+function getTTSConfig() {
+  const provider = process.env.TTS_PROVIDER || 'mimo';
+  const config = TTS_PROVIDERS[provider] || TTS_PROVIDERS.mimo;
+
+  return {
+    provider,
+    apiKey: process.env[config.envKey],
+    baseURL: process.env.TTS_BASE_URL || config.baseURL,
+    model: process.env.TTS_MODEL || config.model,
+    voice: process.env.TTS_VOICE || 'alloy',
+  };
+}
+
 async function generateTTS(text, outputPath) {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const { provider, apiKey, baseURL, model, voice } = getTTSConfig();
+
   if (!apiKey) {
-    console.warn('  Warning: OPENAI_API_KEY not set, skipping TTS generation');
+    const config = TTS_PROVIDERS[provider] || TTS_PROVIDERS.mimo;
+    console.warn(`  Warning: ${config.envKey} not set, skipping TTS generation`);
     return;
   }
 
-  const openai = new OpenAI({ apiKey });
+  console.log(`  TTS: using ${provider} (${model}, voice: ${voice})`);
+
+  const client = new OpenAI({ apiKey, baseURL });
 
   try {
-    const response = await openai.audio.speech.create({
-      model: 'tts-1',
-      voice: 'alloy',
+    const response = await client.audio.speech.create({
+      model,
+      voice,
       input: text,
       response_format: 'mp3',
     });
