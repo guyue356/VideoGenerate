@@ -63,17 +63,28 @@ function extractReadme(projectPath) {
 
 function extractTagline(readme) {
   if (!readme) return null;
-  // Look for the first blockquote or first heading's subtitle
-  const blockquoteMatch = readme.match(/^>\s*(.+)$/m);
-  if (blockquoteMatch) return blockquoteMatch[1].trim();
 
-  // First non-empty line after first heading
-  const lines = readme.split('\n');
+  // Only scan the top portion of the README (first 20 lines)
+  // to avoid matching blockquotes deep in the document
+  const topLines = readme.split('\n').slice(0, 20).join('\n');
+
+  // Priority 1: First non-empty line after the first heading
+  const lines = topLines.split('\n');
   let pastHeading = false;
   for (const line of lines) {
     if (line.startsWith('#')) { pastHeading = true; continue; }
-    if (pastHeading && line.trim()) return line.trim().slice(0, 100);
+    if (pastHeading && line.trim()) {
+      const cleaned = line.trim()
+        .replace(/^\*\*(.+)\*\*$/, '$1')  // strip bold markers
+        .slice(0, 100);
+      return cleaned;
+    }
   }
+
+  // Priority 2: First blockquote in the top portion
+  const blockquoteMatch = topLines.match(/^>\s*(.+)$/m);
+  if (blockquoteMatch) return blockquoteMatch[1].trim().slice(0, 100);
+
   return null;
 }
 

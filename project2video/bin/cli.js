@@ -9,7 +9,7 @@ import { runPipeline } from '../src/pipeline.js';
 
 // Load .env from parent directory (VideoGenerate)
 const __dirname = dirname(fileURLToPath(import.meta.url));
-config({ path: resolve(__dirname, '../../.env') });
+config({ path: resolve(__dirname, '../../.env'), override: true });
 
 const program = new Command();
 

@@ -1,10 +1,10 @@
 import { execSync } from 'child_process';
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
-import { join, relative } from 'path';
+import { existsSync, mkdirSync, writeFileSync, unlinkSync, renameSync } from 'fs';
+import { join, extname } from 'path';
 
 const FFMPEG_DIR = 'D:\\hsj\\Github\\ffmpeg\\bin';
 
-export async function renderVideo({ compositionPath, outputDir, projectRoot, projectName }) {
+export async function renderVideo({ compositionPath, outputDir, projectRoot, projectName, audioDir }) {
   mkdirSync(outputDir, { recursive: true });
 
   if (!existsSync(compositionPath)) {
@@ -42,6 +42,11 @@ export async function renderVideo({ compositionPath, outputDir, projectRoot, pro
       }
     );
 
+    // Merge audio into the rendered video
+    if (audioDir && existsSync(audioDir)) {
+      await mergeAudio(outputPath, audioDir);
+    }
+
     return { outputPath, rendered: true };
   } catch (err) {
     console.warn(`\n  Warning: HyperFrames render failed: ${err.message}`);
@@ -52,6 +57,88 @@ export async function renderVideo({ compositionPath, outputDir, projectRoot, pro
       message: 'Render failed. Open the HTML file in a browser to preview.',
     };
   }
+}
+
+/**
+ * Find an audio file with the given base name, trying multiple extensions.
+ */
+function findAudioFile(dir, baseName) {
+  const extensions = ['.wav', '.mp3', '.ogg', '.m4a'];
+  for (const ext of extensions) {
+    const filePath = join(dir, `${baseName}${ext}`);
+    if (existsSync(filePath)) return filePath;
+  }
+  return null;
+}
+
+/**
+ * Merge narration and/or BGM audio into the rendered video using FFmpeg.
+ */
+async function mergeAudio(videoPath, audioDir) {
+  const narrationPath = findAudioFile(audioDir, 'narration');
+  const bgmPath = findAudioFile(audioDir, 'bgm');
+
+  if (!narrationPath && !bgmPath) {
+    console.log('  Audio: no narration or BGM found, skipping merge');
+    return;
+  }
+
+  const hasNarration = !!narrationPath;
+  const hasBgm = !!bgmPath;
+
+  console.log(`  Audio merge: narration=${hasNarration ? narrationPath : '✗'}, BGM=${hasBgm ? bgmPath : '✗'}`);
+
+  const tempVideo = videoPath.replace(/\.mp4$/, '.novideo.mp4');
+  const tempMerged = videoPath.replace(/\.mp4$/, '.tmp.mp4');
+
+  try {
+    // Step 1: Strip original audio from the rendered video
+    // HyperFrames may embed broken/silent audio from HTML <audio> references
+    console.log('  Audio merge: stripping original audio track...');
+    execSync(
+      `"${getFfmpeg()}" -y -i "${videoPath}" -c:v copy -an "${tempVideo}"`,
+      { stdio: 'pipe', timeout: 60000 }
+    );
+
+    // Step 2: Merge our audio into the stripped video
+    let ffmpegCmd;
+
+    if (hasNarration && hasBgm) {
+      // Mix narration (full volume) with BGM (reduced volume)
+      // Use normalize=0 to prevent amix from reducing volume
+      ffmpegCmd = `"${getFfmpeg()}" -y -i "${tempVideo}" -i "${narrationPath}" -i "${bgmPath}" ` +
+        `-filter_complex "` +
+        `[1:a]aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo,volume=1.0[narr];` +
+        `[2:a]aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo,volume=0.25[bgm];` +
+        `[narr][bgm]amix=inputs=2:duration=first:dropout_transition=2:normalize=0[aout]` +
+        `" -map 0:v -map "[aout]" -c:v copy -c:a aac -b:a 192k -shortest "${tempMerged}"`;
+    } else if (hasNarration) {
+      ffmpegCmd = `"${getFfmpeg()}" -y -i "${tempVideo}" -i "${narrationPath}" ` +
+        `-map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest "${tempMerged}"`;
+    } else {
+      ffmpegCmd = `"${getFfmpeg()}" -y -i "${tempVideo}" -i "${bgmPath}" ` +
+        `-filter_complex "[1:a]aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo,volume=0.3[bgm]" ` +
+        `-map 0:v -map "[bgm]" -c:v copy -c:a aac -b:a 192k -shortest "${tempMerged}"`;
+    }
+
+    console.log('  Audio merge: mixing audio tracks...');
+    execSync(ffmpegCmd, { stdio: 'pipe', timeout: 120000 });
+
+    // Replace original with merged version
+    renameSync(tempMerged, videoPath);
+    console.log('  Audio merge: done ✓');
+
+    // Clean up temp file
+    try { unlinkSync(tempVideo); } catch {}
+  } catch (err) {
+    console.warn(`  Audio merge failed: ${err.message}`);
+    try { unlinkSync(tempVideo); } catch {}
+    try { unlinkSync(tempMerged); } catch {}
+  }
+}
+
+function getFfmpeg() {
+  return join(FFMPEG_DIR, 'ffmpeg.exe');
 }
 
 function initHyperFramesProject(projectRoot) {

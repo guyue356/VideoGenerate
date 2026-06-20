@@ -71,6 +71,9 @@ export async function scanAssets(assetsPath, projectPath) {
   generateRecommendations(result);
   generateFallbackPlan(result);
 
+  // Record the scan directory so asset-collector can resolve paths correctly
+  result._scanDir = scanDir;
+
   return result;
 }
 
